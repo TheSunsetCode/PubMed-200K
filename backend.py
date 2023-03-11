@@ -25,5 +25,23 @@ def preprocess_text(text: str):
     index_one_hot= tf.one_hot(index, depth= 15)
     total= [total for _ in range(total)]
     total_one_hot= tf.one_hot(total, depth= 20)
-    
-    return tf.data.Dataset.from_tensor_slices((index_one_hot, total_one_hot, sentences, sentences_char)).prefetch(tf.data.AUTOTUNE)
+    data= tf.data.Dataset.from_tensor_slices((index_one_hot, total_one_hot, sentences, sentences_char)).batch(32).prefetch(tf.data.AUTOTUNE)
+    labels= tf.data.Dataset.range(len(sentences))
+
+    return tf.data.Dataset.zip((data, labels))
+
+def process_output(data, sentences, class_names, model):
+    outputs= model.predict(data) 
+    preds= tf.squeeze(tf.argmax(outputs, axis= 1))
+    return [{class_names[pred]:sentence} for pred, sentence in zip(preds, sentences)]
+
+def output_to_text(model_output: list [dict], class_names: list [str]):
+    text= {}
+    for sentence in model_output:
+        key= list(sentence.keys())[0]
+        if text.get(key, None) != None:
+            text[key] += f" {sentence.get(key)}"
+        else:
+            text[key] = sentence.get(key)
+
+    return list(text.keys()), text
