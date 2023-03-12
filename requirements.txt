@@ -44,7 +44,7 @@ idna==3.4
     # via requests
 itsdangerous==2.1.2
     # via flask
-jax==0.4.6
+jax
     # via tensorflow-intel
 jinja2==3.1.2
     # via flask
