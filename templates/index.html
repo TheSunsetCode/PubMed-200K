@@ -2,99 +2,139 @@
 <html>
   <head>
     <title>{{ title }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       body {
-        background-color: #2C2F33;
-        color: #FFFFFF;
+        background-color: #2c2f33;
+        color: #ffffff;
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
       }
 
       #container {
-        max-width: 800px;
+        max-width: 1000px;
         margin: 0 auto;
-        padding: 20px;
-        display: flex;
-        flex-wrap: wrap;
+        padding: 0; /* remove padding from container */
       }
 
       h1 {
         font-size: 36px;
         margin-bottom: 20px;
-        position: absolute;
-        left: 45%;
+        text-align: center; /* center the heading */
       }
 
       #text-input {
-        position: absolute;
-        top: 300px;
-        left: 20%;
-        width: 20%;
-        height: 200px;
+        width: 500px;
+        height: 685px;
         margin-bottom: 20px;
         padding: 10px;
         border: none;
         border-radius: 5px;
         font-size: 16px;
-        background-color: #40444B;
-        color: #FFFFFF;
+        background-color: #40444b;
+        color: #ffffff;
       }
 
       #text-input2 {
-        position: absolute;
-        top: 300px;
-        right: 20%;
-        margin-left: 50px;
-        width: 20%;
-        height: 200px;
+        width: 100%;
+        height: 400px;
         margin-bottom: 20px;
+        margin-left: 5%;
         padding: 10px;
         border: none;
         border-radius: 5px;
         font-size: 16px;
-        background-color: #40444B;
-        color: #FFFFFF;
+        background-color: #40444b;
+        color: #ffffff;
       }
 
       #submit-button {
-        position: absolute;
-        top: 50%;
-        left: 45%;
-        background-color: #7289DA;
+        background-color: #7289da;
         border: none;
         border-radius: 5px;
-        color: #FFFFFF;
+        color: #ffffff;
         cursor: pointer;
         display: block;
         font-size: 18px;
-        margin: 0 auto;
+        margin-top: 1%;
+        margin-bottom: 10%;
         padding: 10px 20px;
         transition: background-color 0.3s ease;
         text-align: center;
         text-decoration: none;
-        width: 200px;
+        width: 91%;
       }
 
       #submit-button:hover {
-        background-color: #5C6BC0;
+        background-color: #5c6bc0;
+      }
+
+      @media (max-width: 767px) {
+        #left-section,
+        #middle-section,
+        #right-section {
+          width: 100%; /* make all sections full width */
+        }
+      }
+      #text-input,
+      #text-input2 {
+        width: 45%; /* adjust input widths for large screens */
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      #submit-button {
+        position: absolute;
+        top: 85%;
+        left: 10%;
+        width: 15%; /* make submit button full width */
+        display: block;
+        margin-left: 1%;
+        margin-right: auto;
+      }
+      .text_data {
+        position: absolute;
+        top: 9%;
+        left: 50%;
+        width: 45%;
+        height: 700px;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #40444b;
+        color: #ffffff;
+      }
+      #text-input-container {
+        position: absolute;
+        top: 9%;
+        left: 3%;
+        width: 43%;
+        height: 700px;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #40444b;
+        color: #ffffff;
       }
     </style>
   </head>
   <body>
     <div id="container">
       <h1>{{ title }}</h1>
-      <form method="post" action="/api/v1/main">
-        <textarea id="text-input" name="text" placeholder="Enter your text here">{{ ERRORMESSAGE }}</textarea>
+      <form method="post" action="/">
+        <div id="text-input-container">
+          <textarea id="text-input" name="text" placeholder="Enter your text here">{{ txt2 }}</textarea>
+        </div>
         <button id="submit-button" type="submit">Submit</button>
-      </form>
-      <form method="post" action="/api/v1/main">
-        <textarea id="text-input2" name="text2">{{ text }}</textarea>
-      </form>
+      </form>      
     </div>
-    <div>
-        <p>{{ text }}</p>
+    <div class="text_data" name="text-output">
+      {{ txt }}
     </div>
   </body>
 </html>

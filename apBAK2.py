@@ -11,13 +11,13 @@ TextData = None
 TEXT = None
 
 def output_to_html(output):
+    print(output)
     if not output:
         return ""
     html = ""
-    for key, value in output.items():
-        html += f"<div class=div1 > <h2 class=h2_1 >{key}</h2> <br> <p>{value}</p> <br> </div>"
-    return html
-
+    for sentence in output:
+        for key, value in sentence.items():
+            html += f"<h2>{key}</h2> <br> <p>{value}</p> <br>"
 
 app = Flask(__name__)
 
@@ -27,7 +27,6 @@ def home():
     if request.method == 'POST':
         text = request.form['text']
         main_API(text=text)
-        print("DATA: ", TEXT, type(TEXT))  # Add this line
     return render_template('index.html', title='PubMed 200K', txt=Markup(output_to_html(TEXT)))
 
 def main_API(text):

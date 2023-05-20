@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from backend import output_to_text, preprocess_text, process_output, split_into_sentences
+from backend import output_to_text, preprocess_text, process_output, split_into_sentences, DictKeyCombine
 from keras.models import load_model
 from flask import Markup
 
@@ -9,15 +9,22 @@ model = load_model('Models\\NLP_Sentence_Encoder_Model\\NLP_Sentence_Encoder_Mod
 output = None
 TextData = None
 TEXT = None
+result = None
+
+def detect_words(text: str, words: list[str]):
+    for word in words:
+        if word in text:
+            return f"<h2>{word}</h2>"
+    return ""
 
 def output_to_html(output):
     if not output:
         return ""
     html = ""
-    for key, value in output.items():
-        html += f"<div class=div1 > <h2 class=h2_1 >{key}</h2> <br> <p>{value}</p> <br> </div>"
+    for sentence in output:
+        for key, value in sentence.items():
+            html += f"<h2>{key}</h2> <br> <p>{value}</p> <br>"
     return html
-
 
 app = Flask(__name__)
 
@@ -27,13 +34,13 @@ def home():
     if request.method == 'POST':
         text = request.form['text']
         main_API(text=text)
-        print("DATA: ", TEXT, type(TEXT))  # Add this line
     return render_template('index.html', title='PubMed 200K', txt=Markup(output_to_html(TEXT)))
 
 def main_API(text):
     global ERRORMESSAGE
     global output
     global TEXT
+    global result
     if request.method == 'POST':
         try:
             data = preprocess_text(text)
@@ -43,6 +50,7 @@ def main_API(text):
                 class_names = class_names,
                 model = model
             )
+            result = DictKeyCombine(output)
             clases, TEXT = output_to_text(output, class_names)
             return ""
         except Exception as e:

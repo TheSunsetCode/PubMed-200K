@@ -45,3 +45,13 @@ def output_to_text(model_output: list [dict], class_names: list [str]):
             text[key] = sentence.get(key)
 
     return list(text.keys()), text
+
+# make a function that puts together all the dictionaries that have the same key
+def DictKeyCombine(dict_list: list [dict]):
+    keys= list(dict_list[0].keys())
+    new_dict= {}
+    for key in keys:
+        new_dict[key]= ""
+        for dictionary in dict_list:
+            new_dict[key] += dictionary.get(key)
+    return new_dict
